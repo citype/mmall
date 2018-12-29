@@ -26,7 +26,7 @@ public class UserController {
      * @param session
      * @return
      */
-    @RequestMapping(value = "login.do",method = RequestMethod.GET)
+    @RequestMapping(value = "login.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<User> login(String username, String password, HttpSession session) {
         //service -> mybatis -> dao
@@ -38,7 +38,7 @@ public class UserController {
         return response;
     }
 
-    @RequestMapping(value = "logout.do", method = RequestMethod.GET)
+    @RequestMapping(value = "logout.do", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> logout(HttpSession session) {
 
@@ -46,7 +46,7 @@ public class UserController {
         return ServerResponse.createBySuccess();
     }
 
-    @RequestMapping(value = "register.do",method = RequestMethod.GET)
+    @RequestMapping(value = "register.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> register(User user) {
         return iUserService.register(user);
@@ -57,13 +57,13 @@ public class UserController {
      * 防止未用户通过接口调用我们的注册接口
      * 注册的时候，输入完，点击下一个 input 框的时候也需要实时调用校验接口
      */
-    @RequestMapping(value = "check_valid.do",method = RequestMethod.GET)
+    @RequestMapping(value = "check_valid.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> checkValid(String str, String type) {
         return iUserService.checkValid(str, type);
     }
 
-    @RequestMapping(value = "get_user_info.do",method = RequestMethod.GET)
+    @RequestMapping(value = "get_user_info.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<User> getUserInfo(HttpSession session) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
@@ -76,7 +76,7 @@ public class UserController {
     /**
      * 获取密保问题
      */
-    @RequestMapping(value = "forget_get_question.do", method = RequestMethod.GET)
+    @RequestMapping(value = "forget_get_question.do", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> forgetGetQuestion(String username) {
         return iUserService.selectQuesion(username);
@@ -85,19 +85,19 @@ public class UserController {
     /**
      * 校验问题答案
      */
-    @RequestMapping(value = "forget_check_answer.do", method = RequestMethod.GET)
+    @RequestMapping(value = "forget_check_answer.do", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> forgetCheckAnswer(String username,String question, String answer) {
         return iUserService.checkAnswer(username, question, answer);
     }
 
-    @RequestMapping(value = "forget_reset_password.do",method = RequestMethod.GET)
+    @RequestMapping(value = "forget_reset_password.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> forgetResetPassword(String username, String passwordNew, String forgetToken) {
         return iUserService.forgetResetPassword(username, passwordNew, forgetToken);
     }
 
-    @RequestMapping(value = "reset_password.do",method = RequestMethod.GET)
+    @RequestMapping(value = "reset_password.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> resetPassword(HttpSession session, String passwordOld, String passwordNew) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
@@ -110,7 +110,7 @@ public class UserController {
     /**
      * 更新用户信息
      */
-    @RequestMapping(value = "update_information.do",method = RequestMethod.GET)
+    @RequestMapping(value = "update_information.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<User> update_information(HttpSession session, User user) {
         User currentUser = (User) session.getAttribute(Const.CURRENT_USER) ;
@@ -129,7 +129,7 @@ public class UserController {
     /**
      * 获取用户的详细信息
      */
-    @RequestMapping(value = "get_information.do", method = RequestMethod.GET)
+    @RequestMapping(value = "get_information.do", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<User> get_information(HttpSession session) {
         User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
