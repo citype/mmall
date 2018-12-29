@@ -36,4 +36,31 @@ public class UserController {
         }
         return response;
     }
+
+    @RequestMapping(value = "logout.do", method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<String> logout(HttpSession session) {
+
+        session.removeAttribute(Const.CURRENT_USER);
+        return ServerResponse.createBySuccess();
+    }
+
+    @RequestMapping(value = "register.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<String> register(User user) {
+        return iUserService.register(user);
+    }
+
+    /**
+     * 校验用户名和邮箱是否存在，虽然在注册的时候用过
+     * 防止未用户通过接口调用我们的注册接口
+     * 注册的时候，输入完，点击下一个 input 框的时候也需要实时调用校验接口
+     */
+    @RequestMapping(value = "check_valid.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<String> checkValid(String str, String type) {
+        return iUserService.checkValid(str, type);
+    }
+
+
 }

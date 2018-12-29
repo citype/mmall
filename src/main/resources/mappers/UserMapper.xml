@@ -165,4 +165,10 @@
     where username = #{username}
     and password = ${password}
   </select>
+
+  <select id="checkEmail" resultType="int" parameterType="String">
+    select  count(1) from mmall_user
+    where email = #{email}
+  </select>
+
 </mapper>
