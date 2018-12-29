@@ -62,5 +62,68 @@ public class UserController {
         return iUserService.checkValid(str, type);
     }
 
+    @RequestMapping(value = "get_user_info.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<User> getUserInfo(HttpSession session) {
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (user != null) {
+            return ServerResponse.createBySuccess(user);
+        }
+        return ServerResponse.createByErrorMessage("用户未登录，无法获取当前用户信息");
+    }
+
+    /**
+     * 获取密保问题
+     */
+    @RequestMapping(value = "forget_get_question.do", method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<String> forgetGetQuestion(String username) {
+        return iUserService.selectQuesion(username);
+    }
+
+    /**
+     * 校验问题答案
+     */
+    @RequestMapping(value = "forget_check_answer.do", method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<String> forgetCheckAnswer(String username,String question, String answer) {
+        return iUserService.checkAnswer(username, question, answer);
+    }
+
+    @RequestMapping(value = "forget_reset_password.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<String> forgetResetPassword(String username, String passwordNew, String forgetToken) {
+        return iUserService.forgetResetPassword(username, passwordNew, forgetToken);
+    }
+
+    @RequestMapping(value = "reset_password.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<String> resetPassword(HttpSession session, String passwordOld, String passwordNew) {
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (user == null) {
+            return ServerResponse.createByErrorMessage("用户未登录");
+        }
+        return iUserService.resetPassword(passwordOld, passwordNew, user);
+    }
+
+    /**
+     * 更新用户信息
+     */
+    @RequestMapping(value = "update_information.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<User> update_information(HttpSession session, User user) {
+        User currentUser = (User) session.getAttribute(Const.CURRENT_USER) ;
+        if (currentUser == null) {
+            return ServerResponse.createByErrorMessage("用户未登录");
+        }
+        user.setId(currentUser.getId());
+        ServerResponse<User> response = iUserService.updateInformation(user);
+        if (response.isSuccess()) {
+            session.setAttribute(Const.CURRENT_USER, response.getData());
+        }
+        return response;
+
+    }
+
 
 }
