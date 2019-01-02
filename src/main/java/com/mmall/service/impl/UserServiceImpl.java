@@ -10,10 +10,7 @@ import com.mmall.util.MD5Util;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.tools.jstat.Token;
 
-import javax.jws.soap.SOAPBinding;
-import javax.servlet.http.HttpSession;
 import java.util.UUID;
 
 @Service("iUserService")
